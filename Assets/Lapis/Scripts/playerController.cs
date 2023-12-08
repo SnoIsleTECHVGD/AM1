@@ -31,7 +31,10 @@ public class playerController : MonoBehaviour
             jumpCount--;
             pc.AddForce(Vector2.up * jumpspeed, ForceMode2D.Impulse);
         }
-        pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -maxSpeed, maxSpeed), pc.velocity.y);
+
+        float maxSpeedDelta = maxSpeed * Time.deltaTime;
+
+        pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -maxSpeedDelta, maxSpeedDelta), pc.velocity.y);
 
     }
     private void OnCollisionEnter2D(Collision2D collision)
