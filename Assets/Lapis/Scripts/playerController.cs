@@ -18,13 +18,15 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float buildUpDelta = (buildUp * 1000) * Time.deltaTime;
+
         if (Input.GetKey(KeyCode.A))
         {
-            pc.AddForce(Vector2.left * buildUp);
+            pc.AddForce(Vector2.left * buildUpDelta);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            pc.AddForce(Vector2.right * buildUp);
+            pc.AddForce(Vector2.right * buildUpDelta);
         }
         if (Input.GetKeyDown(KeyCode.Space) && jumpCount == 1)
         {
@@ -32,9 +34,7 @@ public class playerController : MonoBehaviour
             pc.AddForce(Vector2.up * jumpspeed, ForceMode2D.Impulse);
         }
 
-        float maxSpeedDelta = maxSpeed * Time.deltaTime;
-
-        pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -maxSpeedDelta, maxSpeedDelta), pc.velocity.y);
+        pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -maxSpeed, maxSpeed), pc.velocity.y);
 
     }
     private void OnCollisionEnter2D(Collision2D collision)

@@ -700,8 +700,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10c6f33ed3d118741b87e6a5430a31c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildUp: 30
-  maxSpeed: 10
+  buildUp: 4
+  maxSpeed: 7
   jumpspeed: 13
 --- !u!61 &1184338541
 BoxCollider2D:
