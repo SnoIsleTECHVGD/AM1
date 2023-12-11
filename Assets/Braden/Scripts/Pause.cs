@@ -13,6 +13,8 @@ public class Pause : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1;
+
         mainCanvas.enabled = false;
         bgCanvas.enabled = false;
     }
@@ -48,7 +50,6 @@ public class Pause : MonoBehaviour
 
     public void SwitchToMenu()
     {
-        SetPaused(false);
         SceneManager.LoadScene("TitleScreen", LoadSceneMode.Single);
     }
 }
