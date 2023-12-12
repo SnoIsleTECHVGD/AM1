@@ -36,6 +36,7 @@ public class playerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && CheckGrounding())
         {
             pc.AddForce(Vector2.up * jumpspeed, ForceMode2D.Impulse);
+            gameObject.GetComponent<AudioSource>().Play();
         }
 
         pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -maxSpeed, maxSpeed), pc.velocity.y);
