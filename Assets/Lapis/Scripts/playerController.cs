@@ -7,11 +7,16 @@ public class playerController : MonoBehaviour
     public float buildUp;
     public float maxSpeed;
     public float jumpspeed;
-    private int jumpCount = 1;
     private Rigidbody2D pc;
+    //Ground Detect
+    [SerializeField]
+    private Transform foot;
+    [SerializeField]
+    private LayerMask groundMask;
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
         pc = GetComponent<Rigidbody2D>();
     }
 
@@ -28,18 +33,20 @@ public class playerController : MonoBehaviour
         {
             pc.AddForce(Vector2.right * buildUpDelta);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCount == 1)
+        if (Input.GetKeyDown(KeyCode.Space) && CheckGrounding())
         {
-            jumpCount--;
             pc.AddForce(Vector2.up * jumpspeed, ForceMode2D.Impulse);
         }
 
         pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -maxSpeed, maxSpeed), pc.velocity.y);
 
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private bool CheckGrounding()
     {
-        jumpCount = 1;
+        RaycastHit2D hit;
+        hit = Physics2D.Raycast(foot.position, Vector2.down, 0.2f, groundMask);
+
+        return hit;
     }
 
 }
