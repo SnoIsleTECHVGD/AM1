@@ -8,6 +8,7 @@ public class playerController : MonoBehaviour
     public float maxSpeed;
     public float jumpspeed;
     private Rigidbody2D pc;
+    private Animator anim;
     //Ground Detect
     [SerializeField]
     private Transform foot;
@@ -18,6 +19,7 @@ public class playerController : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         pc = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -28,10 +30,17 @@ public class playerController : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             pc.AddForce(Vector2.left * buildUpDelta);
+            anim.SetInteger("walkdir", 1);
+            
         }
-        if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             pc.AddForce(Vector2.right * buildUpDelta);
+            anim.SetInteger("walkdir", 2);
+        }
+        else
+        {
+            anim.SetInteger("walkdir", 0);
         }
         if (Input.GetKeyDown(KeyCode.Space) && CheckGrounding())
         {
