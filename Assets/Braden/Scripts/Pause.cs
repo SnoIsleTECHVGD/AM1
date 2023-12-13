@@ -8,15 +8,15 @@ public class Pause : MonoBehaviour
     public bool isPaused = false;
     public KeyCode pauseKey = KeyCode.Escape;
 
-    public Canvas mainCanvas;
-    public Canvas bgCanvas;
+    public GameObject mainCanvas;
+    public GameObject bgCanvas;
 
     void Start()
     {
         Time.timeScale = 1;
 
-        mainCanvas.enabled = false;
-        bgCanvas.enabled = false;
+        mainCanvas.SetActive(false);
+        bgCanvas.SetActive(false);
     }
 
     void Update()
@@ -36,8 +36,8 @@ public class Pause : MonoBehaviour
 
         isPaused = state;
 
-        mainCanvas.enabled = state;
-        bgCanvas.enabled = state;
+        mainCanvas.SetActive(state);
+        bgCanvas.SetActive(state);
 
         if (state == true)
         {
