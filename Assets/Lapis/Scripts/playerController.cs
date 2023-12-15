@@ -54,7 +54,7 @@ public class playerController : MonoBehaviour
     private bool CheckGrounding()
     {
         RaycastHit2D hit;
-        hit = Physics2D.Raycast(foot.position, Vector2.down, 0.2f, groundMask);
+        hit = Physics2D.Raycast(foot.position, Vector2.down, 0.1f, groundMask);
 
         return hit;
     }
