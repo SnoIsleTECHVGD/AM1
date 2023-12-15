@@ -232,6 +232,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1058694427 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5994544149309817032, guid: 99ecd4d916991f749b3cf85695cfe306, type: 3}
+  m_PrefabInstance: {fileID: 5994544150426784423}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1551576615
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,9 +358,9 @@ GameObject:
   - component: {fileID: 1699947924}
   - component: {fileID: 1699947923}
   - component: {fileID: 1699947922}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RealBox
-  m_TagString: Untagged
+  m_TagString: PushObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -588,6 +593,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4548698489215020827, guid: 99ecd4d916991f749b3cf85695cfe306, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5994544149309817032, guid: 99ecd4d916991f749b3cf85695cfe306, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -689,6 +698,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8519193585565804865, guid: 8d3581b293e64f24886251f3ebc8e2d7, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1058694427}
     - target: {fileID: 8519193585565804869, guid: 8d3581b293e64f24886251f3ebc8e2d7, type: 3}
       propertyPath: m_Name
       value: Camera
