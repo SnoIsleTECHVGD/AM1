@@ -134,6 +134,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: FakeBox
       objectReference: {fileID: 0}
+    - target: {fileID: 3640070190411697412, guid: cd3758e58978b574b8a9bcb862b67d02, type: 3}
+      propertyPath: m_Color.b
+      value: 0.47058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 3640070190411697412, guid: cd3758e58978b574b8a9bcb862b67d02, type: 3}
+      propertyPath: m_Color.g
+      value: 0.47058824
+      objectReference: {fileID: 0}
+    - target: {fileID: 3640070190411697412, guid: cd3758e58978b574b8a9bcb862b67d02, type: 3}
+      propertyPath: m_Color.r
+      value: 0.47058824
+      objectReference: {fileID: 0}
     - target: {fileID: 3640070190411697413, guid: cd3758e58978b574b8a9bcb862b67d02, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -240,6 +252,18 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 200890602}
+    - target: {fileID: 8519193585565804867, guid: 8d3581b293e64f24886251f3ebc8e2d7, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.0627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 8519193585565804867, guid: 8d3581b293e64f24886251f3ebc8e2d7, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.0627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 8519193585565804867, guid: 8d3581b293e64f24886251f3ebc8e2d7, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.0627451
+      objectReference: {fileID: 0}
     - target: {fileID: 8519193585565804869, guid: 8d3581b293e64f24886251f3ebc8e2d7, type: 3}
       propertyPath: m_Name
       value: Camera
