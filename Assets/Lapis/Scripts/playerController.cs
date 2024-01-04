@@ -31,12 +31,14 @@ public class playerController : MonoBehaviour
         {
             pc.AddForce(Vector2.left * buildUpDelta);
             anim.SetInteger("walkdir", 1);
+            anim.SetInteger("facedir", 1);
             
         }
         else if (Input.GetKey(KeyCode.D))
         {
             pc.AddForce(Vector2.right * buildUpDelta);
             anim.SetInteger("walkdir", 2);
+            anim.SetInteger("facedir", 2);
         }
         else
         {
