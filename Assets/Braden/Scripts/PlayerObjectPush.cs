@@ -49,7 +49,7 @@ public class PlayerObjectPush : MonoBehaviour
         if (isPushing == true || !activeObject)
             return;
 
-        print("Push " + activeObject.name);
+        print("Push " + activeObject.name + "!");
     }
 
     void StopPushing()
