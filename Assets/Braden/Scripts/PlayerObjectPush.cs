@@ -6,6 +6,8 @@ using UnityEngine.Animations;
 public class PlayerObjectPush : MonoBehaviour
 {
     public KeyCode pushButton = KeyCode.E;
+
+    public bool canPush = true;
     public bool isPushing = false;
 
     private Collider2D activeCollider;
@@ -47,7 +49,7 @@ public class PlayerObjectPush : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision == activeCollider && isPushing == false)
+        if (collision == activeCollider)
             StopPushing();
     }
 
@@ -55,7 +57,7 @@ public class PlayerObjectPush : MonoBehaviour
 
     void StartPushing()
     {
-        if (isPushing == true || !activeObject || !controller.CheckGrounding())
+        if (isPushing == true || canPush == false || !activeObject || !controller.CheckGrounding())
             return;
 
         isPushing = true;
@@ -64,9 +66,15 @@ public class PlayerObjectPush : MonoBehaviour
         source.sourceTransform = player.transform;
         source.weight = 1;
 
+        Vector3 difference = activeObject.transform.position - player.transform.position;
+        Vector3 offset = new Vector3(0.9f, difference.y, 0);
+
+        if (difference.x < 0)
+            offset.x *= -1;
+
         constraint = activeObject.AddComponent<ParentConstraint>();
         constraint.constraintActive = true;
-        constraint.SetTranslationOffset(constraint.AddSource(source), activeObject.transform.position - player.transform.position);
+        constraint.SetTranslationOffset(constraint.AddSource(source), offset);
 
         print("Push " + activeObject.name + "!");
     }
@@ -76,6 +84,9 @@ public class PlayerObjectPush : MonoBehaviour
         if (isPushing == true)
         {
             Destroy(constraint);
+            constraint = null;
+
+            print("STOP PUSH");
         }
 
         isPushing = false;
