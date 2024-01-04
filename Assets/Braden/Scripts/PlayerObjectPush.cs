@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class PlayerObjectPush : MonoBehaviour
 {
@@ -11,18 +12,26 @@ public class PlayerObjectPush : MonoBehaviour
     private GameObject activeObject;
 
     private BoxCollider2D myCollider;
+    private ParentConstraint constraint;
+
+    public GameObject player;
+    private playerController controller;
 
     // Start is called before the first frame update
     void Start()
     {
         myCollider = GetComponent<BoxCollider2D>();
+        controller = player.GetComponent<playerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(pushButton))
-            StartPushing();
+            if (isPushing == false)
+                StartPushing();
+            else
+                StopPushing();
     }
 
     // Coolissions
@@ -46,8 +55,18 @@ public class PlayerObjectPush : MonoBehaviour
 
     void StartPushing()
     {
-        if (isPushing == true || !activeObject)
+        if (isPushing == true || !activeObject || !controller.CheckGrounding())
             return;
+
+        isPushing = true;
+
+        ConstraintSource source = new ConstraintSource();
+        source.sourceTransform = player.transform;
+        source.weight = 1;
+
+        constraint = activeObject.AddComponent<ParentConstraint>();
+        constraint.constraintActive = true;
+        constraint.SetTranslationOffset(constraint.AddSource(source), activeObject.transform.position - player.transform.position);
 
         print("Push " + activeObject.name + "!");
     }
@@ -56,7 +75,7 @@ public class PlayerObjectPush : MonoBehaviour
     {
         if (isPushing == true)
         {
-            // do stuff
+            Destroy(constraint);
         }
 
         isPushing = false;

@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
+    // Options
     public float buildUp;
+    public float pushBuildUp;
+
     public float maxSpeed;
     public float jumpspeed;
+
+    // Private References
+    [SerializeField]
+    private PlayerObjectPush objectPush;
+
     private Rigidbody2D pc;
     private Animator anim;
-    //Ground Detect
+
+    // Ground Detect
     [SerializeField]
     private Transform foot;
     [SerializeField]
     private LayerMask groundMask;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,14 +35,22 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float buildUpDelta = (buildUp * 1000) * Time.deltaTime;
+        float currentBuildUp;
+
+        if (objectPush.isPushing == true)
+            currentBuildUp = pushBuildUp;
+        else
+            currentBuildUp = buildUp;
+
+        // Apply Force
+
+        float buildUpDelta = (currentBuildUp * 1000) * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.A))
         {
             pc.AddForce(Vector2.left * buildUpDelta);
             anim.SetInteger("walkdir", 1);
             anim.SetInteger("facedir", 1);
-            
         }
         else if (Input.GetKey(KeyCode.D))
         {
@@ -44,21 +62,20 @@ public class playerController : MonoBehaviour
         {
             anim.SetInteger("walkdir", 0);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && CheckGrounding())
+
+        if (Input.GetKeyDown(KeyCode.Space) && objectPush.isPushing == false && CheckGrounding())
         {
             pc.AddForce(Vector2.up * jumpspeed, ForceMode2D.Impulse);
             gameObject.GetComponent<AudioSource>().Play();
         }
 
         pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -maxSpeed, maxSpeed), pc.velocity.y);
-
     }
-    private bool CheckGrounding()
+    public bool CheckGrounding()
     {
         RaycastHit2D hit;
         hit = Physics2D.Raycast(foot.position, Vector2.down, 0.1f, groundMask);
 
         return hit;
     }
-
 }
