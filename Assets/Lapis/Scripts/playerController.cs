@@ -6,9 +6,9 @@ public class playerController : MonoBehaviour
 {
     // Options
     public float buildUp;
-    public float pushBuildUp;
-
     public float maxSpeed;
+    public float pushMaxSpeed;
+
     public float jumpspeed;
 
     // Private References
@@ -35,16 +35,9 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float currentBuildUp;
-
-        if (objectPush.isPushing == true)
-            currentBuildUp = pushBuildUp;
-        else
-            currentBuildUp = buildUp;
-
         // Apply Force
 
-        float buildUpDelta = (currentBuildUp * 1000) * Time.deltaTime;
+        float buildUpDelta = (buildUp * 1000) * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -69,7 +62,14 @@ public class playerController : MonoBehaviour
             gameObject.GetComponent<AudioSource>().Play();
         }
 
-        pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -maxSpeed, maxSpeed), pc.velocity.y);
+        float currentMaxSpeed = maxSpeed;
+
+        if (objectPush.isPushing == true)
+        {
+            currentMaxSpeed = pushMaxSpeed;
+        }
+
+        pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -currentMaxSpeed, currentMaxSpeed), pc.velocity.y);
     }
     public bool CheckGrounding()
     {

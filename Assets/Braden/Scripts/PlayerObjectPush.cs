@@ -12,12 +12,19 @@ public class PlayerObjectPush : MonoBehaviour
 
     private Collider2D activeCollider;
     private GameObject activeObject;
+    private Rigidbody2D activeBody;
 
     private BoxCollider2D myCollider;
     private ParentConstraint constraint;
 
     public GameObject player;
     private playerController controller;
+
+    private float maxOffset = 0.9f;
+    private bool isRight = false;
+
+    [SerializeField]
+    private LayerMask groundMask;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +41,26 @@ public class PlayerObjectPush : MonoBehaviour
                 StartPushing();
             else
                 StopPushing();
+
+        // Set Box Position
+
+        if (isPushing == true)
+        {
+            Vector3 newPosition = player.transform.position + GetConstraintOffset(maxOffset);
+            float rayMagnitude = 0.5f;
+
+            RaycastHit2D hit = CastBoxRay(newPosition, rayMagnitude);
+
+            if (hit.collider != null && hit.collider != activeCollider)
+            {
+                if (isRight == true)
+                    rayMagnitude *= -1;
+
+                newPosition = new Vector3(hit.point.x + rayMagnitude, hit.point.y, 0);
+            }
+
+            activeBody.position = newPosition;
+        }
     }
 
     // Coolissions
@@ -47,10 +74,28 @@ public class PlayerObjectPush : MonoBehaviour
         activeObject = collision.gameObject;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    // Helpers
+
+    RaycastHit2D CastBoxRay(Vector3 origin, float magnitude)
     {
-        if (collision == activeCollider)
-            StopPushing();
+        Vector2 direction;
+
+        if (isRight == true)
+            direction = Vector2.right;
+        else
+            direction = Vector2.left;
+
+        return Physics2D.Raycast(origin, direction, magnitude, groundMask);
+    }
+
+    Vector3 GetConstraintOffset(float offsetNum)
+    {
+        Vector3 offset = new Vector3(offsetNum, -0.16f, 0);
+
+        if (isRight == false)
+            offset.x *= -1;
+
+        return offset;
     }
 
     // Main
@@ -62,19 +107,11 @@ public class PlayerObjectPush : MonoBehaviour
 
         isPushing = true;
 
-        ConstraintSource source = new ConstraintSource();
-        source.sourceTransform = player.transform;
-        source.weight = 1;
+        activeObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+        activeBody = activeObject.GetComponent<Rigidbody2D>();
 
         Vector3 difference = activeObject.transform.position - player.transform.position;
-        Vector3 offset = new Vector3(0.9f, difference.y, 0);
-
-        if (difference.x < 0)
-            offset.x *= -1;
-
-        constraint = activeObject.AddComponent<ParentConstraint>();
-        constraint.constraintActive = true;
-        constraint.SetTranslationOffset(constraint.AddSource(source), offset);
+        isRight = difference.x >= 0;
 
         print("Push " + activeObject.name + "!");
     }
@@ -83,6 +120,8 @@ public class PlayerObjectPush : MonoBehaviour
     {
         if (isPushing == true)
         {
+            activeObject.layer = LayerMask.NameToLayer("Ground");
+
             Destroy(constraint);
             constraint = null;
 
@@ -92,5 +131,6 @@ public class PlayerObjectPush : MonoBehaviour
         isPushing = false;
         activeCollider = null;
         activeObject = null;
+        activeBody = null;
     }
 }

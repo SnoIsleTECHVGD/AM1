@@ -71,8 +71,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushButton: 101
+  canPush: 1
   isPushing: 0
   player: {fileID: 5994544149309817036}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &5994544148941012029
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,8 +262,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildUp: 4
-  pushBuildUp: 2
   maxSpeed: 7
+  pushMaxSpeed: 2
   jumpspeed: 13
   objectPush: {fileID: 7740281340742592207}
   foot: {fileID: 5994544148941012028}
