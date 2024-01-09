@@ -14,14 +14,19 @@ public class WeightScale : MonoBehaviour
     private BoxCollider2D leftCollider;
     private BoxCollider2D rightCollider;
 
-    private Vector3 baseLeftPos;
-    private Vector3 baseRightPos;
+    private Transform leftTrans;
+    private Transform rightTrans;
+    private Transform barTrans;
+
+    private Vector3 basePos;
 
     // Weight Data
 
-    float maxDegrees = 35; // For any direction
-    float transformYPerDegree = 0.0595f / 35;
-    float minMultiplier = 1; // For the scale to tip in favor
+    public float maxDegrees = 25; // For any direction
+    public float minMultiplier = 4; // For the scale to tip in favor
+
+    float transformYPerDegree = 0.07f / 35;
+    float transformXPerDegree = 0.025f / 35;
 
     // Start is called before the first frame update
     void Start()
@@ -29,8 +34,11 @@ public class WeightScale : MonoBehaviour
         leftCollider = weightLeft.GetComponent<BoxCollider2D>();
         rightCollider = weightRight.GetComponent<BoxCollider2D>();
 
-        baseLeftPos = weightLeft.transform.localPosition;
-        baseRightPos = weightRight.transform.localPosition;
+        leftTrans = weightLeft.transform;
+        rightTrans = weightRight.transform;
+        barTrans = weightBar.transform;
+
+        basePos = rightTrans.localPosition;
     }
 
     // Update is called once per frame
@@ -45,7 +53,7 @@ public class WeightScale : MonoBehaviour
     {
         RaycastHit2D[] cast = new RaycastHit2D[5];
 
-        int results = collider.Cast(Vector2.up, cast, 1.5f, true);
+        int results = collider.Cast(Vector2.up, cast, 0.4f, true);
         float mass = 1;
 
         if (results > 0)
@@ -69,13 +77,13 @@ public class WeightScale : MonoBehaviour
         float leftMass = GetMass(leftCollider);
         float rightMass = GetMass(rightCollider);
 
-        // NOTE TO SELF: try constrainting the weightleft and weightright to the bar when its rotating, could work
+        float dt = Time.deltaTime * 3;
 
         if (leftMass == rightMass)
         {
-            weightBar.transform.rotation = new Quaternion(0, 0, 0, 0);
-            //weightLeft.transform.localPosition = baseLeftPos;
-           // weightRight.transform.localPosition = baseRightPos;
+            barTrans.rotation = Quaternion.Lerp(barTrans.rotation, Quaternion.Euler(0, 0, 0), dt);
+            leftTrans.localPosition = Vector2.Lerp(leftTrans.localPosition, new Vector2(-basePos.x, basePos.y), dt);
+            rightTrans.localPosition = Vector2.Lerp(rightTrans.localPosition, new Vector2(basePos.x, basePos.x), dt);
 
             return;
         }
@@ -94,21 +102,20 @@ public class WeightScale : MonoBehaviour
         }
 
         float weightBarRotate = (maxDegrees * ratio) * multiplier;
-        float yDifference = weightBarRotate * transformYPerDegree;
 
-        print(weightBarRotate);
+        float xDiff = -(transformXPerDegree * weightBarRotate);
+        float yDiff = weightBarRotate * transformYPerDegree;
 
-        weightBar.transform.eulerAngles = new Vector3(0, 0, weightBarRotate);
+        barTrans.rotation = Quaternion.Lerp(barTrans.rotation, Quaternion.Euler(0, 0, weightBarRotate), dt);
 
-        /*
         if (leftMass > rightMass)
         {
-            weightLeft.transform.localPosition = new Vector3(baseLeftPos.x, baseLeftPos.y + yDifference, baseLeftPos.z);
-            weightRight.transform.localPosition = new Vector3(baseRightPos.x, baseRightPos.y - yDifference, baseRightPos.z);
+            leftTrans.localPosition = Vector2.Lerp(leftTrans.localPosition, new Vector2(-basePos.x, basePos.y - yDiff), dt);
+            rightTrans.localPosition = Vector2.Lerp(rightTrans.localPosition, new Vector2(xDiff + basePos.x, basePos.y + yDiff), dt);
         } else
         {
-            weightRight.transform.localPosition = new Vector3(baseRightPos.x, baseRightPos.y + yDifference, baseRightPos.z);
-            weightLeft.transform.localPosition = new Vector3(baseLeftPos.x, baseLeftPos.y - yDifference, baseLeftPos.z);
-        }*/
+            leftTrans.localPosition = Vector2.Lerp(leftTrans.localPosition, new Vector2(xDiff - basePos.x, basePos.y - (yDiff - 0.007f)), dt);
+            rightTrans.localPosition = Vector2.Lerp(rightTrans.localPosition, new Vector2(basePos.x, basePos.y + yDiff), dt);
+        }
     }
 }
