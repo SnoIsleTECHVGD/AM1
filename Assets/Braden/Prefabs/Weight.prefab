@@ -340,6 +340,7 @@ GameObject:
   - component: {fileID: 5424589826859388727}
   - component: {fileID: 8255989508219597908}
   - component: {fileID: 1552301383987869711}
+  - component: {fileID: 7746769317992501888}
   m_Layer: 3
   m_Name: Weight
   m_TagString: Untagged
@@ -422,7 +423,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5642038171126569199}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -482,3 +483,36 @@ MonoBehaviour:
   weightBar: {fileID: 5642038170860160310}
   weightLeft: {fileID: 5642038169637776616}
   weightRight: {fileID: 5642038170774342934}
+  maxDegrees: 25
+  minMultiplier: 4
+--- !u!60 &7746769317992501888
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5642038171126569199}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.4, y: 0.4}
+    newSize: {x: 0.4, y: 0.4}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.098560005, y: -0.19125766}
+      - {x: 0.0983487, y: -0.19091018}
+      - {x: 0.062363584, y: -0.15934779}
+      - {x: 0.041568916, y: -0.13992944}
+      - {x: -0.001866715, y: -0.13992946}
+      - {x: -0.049622312, y: -0.13961846}

@@ -124,6 +124,10 @@ public class PlayerObjectPush : MonoBehaviour
             //activeObject.layer = LayerMask.NameToLayer("Ground");
             activeBody.constraints = RigidbodyConstraints2D.None;
             activeBody.gravityScale = 1;
+
+            activeBody.position += (controller.pc.velocity * 0.3f);
+            activeBody.velocity = controller.pc.velocity * 1f;
+
             print("STOP PUSH");
         }
 

@@ -15,7 +15,7 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private PlayerObjectPush objectPush;
 
-    private Rigidbody2D pc;
+    public Rigidbody2D pc;
     private Animator anim;
 
     // Ground Detect
