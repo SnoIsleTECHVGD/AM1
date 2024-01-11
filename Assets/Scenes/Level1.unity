@@ -623,7 +623,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1552301383987869711, guid: 9a0c9d8b3baf3f7449d9687bb506e8c7, type: 3}
       propertyPath: maxDegrees
-      value: 18
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 5642038169637776619, guid: 9a0c9d8b3baf3f7449d9687bb506e8c7, type: 3}
       propertyPath: m_LocalPosition.x

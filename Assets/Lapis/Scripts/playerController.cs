@@ -56,6 +56,8 @@ public class playerController : MonoBehaviour
             anim.SetInteger("walkdir", 0);
         }
 
+        anim.SetBool("isPushing", objectPush.isPushing);
+
         if (Input.GetKeyDown(KeyCode.Space) && CheckGrounding()) // && objectPush.isPushing == false
         {
             pc.AddForce(Vector2.up * jumpspeed, ForceMode2D.Impulse);
