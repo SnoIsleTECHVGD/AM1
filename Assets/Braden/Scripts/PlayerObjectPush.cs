@@ -10,22 +10,39 @@ public class PlayerObjectPush : MonoBehaviour
     public bool canPush = true;
     public bool isPushing = false;
 
-    private Collider2D activeCollider;
     private GameObject activeObject;
     private Rigidbody2D activeBody;
 
     public GameObject player;
-    private playerController controller;
 
-    private float maxOffset = 1.2f;
+    private playerController controller;
+    private Animator playerAnimator;
+    private BoxCollider2D basePlayerCollider;
+    private BoxCollider2D pushPlayerCollider;
+
+    public Vector3 objectOffset;
 
     [SerializeField]
     private LayerMask groundMask;
+
+    // Data
+    private float throwDistance = 1.5f;
+    private float idleThrowDistance = 0.5f;
+
+    private float throwSpeed = 3;
 
     // Start is called before the first frame update
     void Start()
     {
         controller = player.GetComponent<playerController>();
+        playerAnimator = player.GetComponent<Animator>();
+        basePlayerCollider = player.GetComponent<BoxCollider2D>();
+
+        pushPlayerCollider = player.AddComponent<BoxCollider2D>();
+        pushPlayerCollider.enabled = false;
+
+        pushPlayerCollider.size = new Vector2(0.7492623f, 0.3579229f);
+        pushPlayerCollider.offset = new Vector2(-0.04596132f, -0.2675037f);
     }
 
     // Update is called once per frame
@@ -41,23 +58,8 @@ public class PlayerObjectPush : MonoBehaviour
 
         if (isPushing == true)
         {
-            Vector3 newPosition = player.transform.position + GetConstraintOffset(maxOffset);
-
-            /*
-            float rayMagnitude = 0.5f;
-
-            RaycastHit2D hit = CastBoxRay(newPosition, rayMagnitude);
-
-            if (hit.collider != null && hit.collider != activeCollider)
-            {
-                /*
-                if (isRight == true)
-                    rayMagnitude *= -1;
-
-                newPosition = new Vector3(0, hit.point.y + rayMagnitude, 0);// new Vector3(hit.point.x + rayMagnitude, hit.point.y, 0);
-            }*/
-
-            activeBody.position = player.transform.position + GetConstraintOffset(maxOffset);
+            Vector3 newPosition = player.transform.position + objectOffset;
+            activeBody.position = newPosition;
         }
     }
 
@@ -68,71 +70,59 @@ public class PlayerObjectPush : MonoBehaviour
         if (collision.gameObject.CompareTag("PushObject") != true)
             return;
 
-        activeCollider = collision;
         activeObject = collision.gameObject;
-    }
-
-    // Helpers
-
-    RaycastHit2D CastBoxRay(Vector3 origin, float magnitude)
-    {
-        Vector2 direction = Vector2.up;
-
-        /*
-        if (isRight == true)
-            direction = Vector2.right;
-        else
-            direction = Vector2.left;*/
-
-        return Physics2D.Raycast(origin, direction, magnitude, groundMask);
-    }
-
-    Vector3 GetConstraintOffset(float offsetNum)
-    {
-        Vector3 offset = new Vector3(0, offsetNum, 0); // new Vector3(offsetNum, -0.16f, 0);
-
-        //if (isRight == false)
-            //offset.x *= -1;
-
-        return offset;
     }
 
     // Main
 
     void StartPushing()
     {
-        if (isPushing == true || canPush == false || !activeObject || !controller.CheckGrounding())
+        if (isPushing == true || canPush == false || !activeObject) // || !controller.CheckGrounding()
             return;
 
         isPushing = true;
 
-        //activeObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+        basePlayerCollider.enabled = false;
+        pushPlayerCollider.enabled = true;
+
         activeBody = activeObject.GetComponent<Rigidbody2D>();
         activeBody.gravityScale = 0;
+        activeBody.rotation = 0;
         activeBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        //Vector3 difference = activeObject.transform.position - player.transform.position;
-        //isRight = difference.x >= 0;
-
-        print("Push " + activeObject.name + "!");
+        //print("Push " + activeObject.name + "!");
     }
 
     void StopPushing()
     {
         if (isPushing == true)
         {
-            //activeObject.layer = LayerMask.NameToLayer("Ground");
             activeBody.constraints = RigidbodyConstraints2D.None;
             activeBody.gravityScale = 1;
 
-            activeBody.position += (controller.pc.velocity * 0.3f);
-            activeBody.velocity = controller.pc.velocity * 1f;
+            basePlayerCollider.enabled = true;
+            pushPlayerCollider.enabled = false;
 
-            print("STOP PUSH");
+            // Throw
+
+            bool isRight = playerAnimator.GetInteger("facedir") == 2;
+            Vector2 throwVector;
+
+            if (isRight == true)
+                throwVector = Vector2.right;
+            else
+                throwVector = Vector2.left;
+
+            if (playerAnimator.GetInteger("walkdir") == 0)
+                activeBody.position += throwVector * idleThrowDistance;
+            else
+                activeBody.position += throwVector * throwDistance;
+
+            activeBody.velocity = throwVector * throwSpeed;
+            //print("STOP PUSH");
         }
 
         isPushing = false;
-        activeCollider = null;
         activeObject = null;
         activeBody = null;
     }
