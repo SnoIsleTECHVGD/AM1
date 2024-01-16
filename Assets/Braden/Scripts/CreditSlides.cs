@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class CreditSlides : MonoBehaviour
 {
     private int slideNumber = 0;
-    private int amountOfSlides = 6;
+    public int amountOfSlides;
 
     private Image currentSlide;
 

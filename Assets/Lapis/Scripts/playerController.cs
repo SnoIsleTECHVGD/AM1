@@ -6,16 +6,16 @@ public class playerController : MonoBehaviour
 {
     // Options
     public float buildUp;
-    public float pushBuildUp;
-
     public float maxSpeed;
+    public float pushMaxSpeed;
+
     public float jumpspeed;
 
     // Private References
     [SerializeField]
     private PlayerObjectPush objectPush;
 
-    private Rigidbody2D pc;
+    public Rigidbody2D pc;
     private Animator anim;
 
     // Ground Detect
@@ -35,16 +35,9 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float currentBuildUp;
-
-        if (objectPush.isPushing == true)
-            currentBuildUp = pushBuildUp;
-        else
-            currentBuildUp = buildUp;
-
         // Apply Force
 
-        float buildUpDelta = (currentBuildUp * 1000) * Time.deltaTime;
+        float buildUpDelta = (buildUp * 1000) * Time.deltaTime;
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -63,13 +56,22 @@ public class playerController : MonoBehaviour
             anim.SetInteger("walkdir", 0);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && objectPush.isPushing == false && CheckGrounding())
+        anim.SetBool("isPushing", objectPush.isPushing);
+
+        if (Input.GetKeyDown(KeyCode.Space) && CheckGrounding()) // && objectPush.isPushing == false
         {
             pc.AddForce(Vector2.up * jumpspeed, ForceMode2D.Impulse);
             gameObject.GetComponent<AudioSource>().Play();
         }
 
-        pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -maxSpeed, maxSpeed), pc.velocity.y);
+        float currentMaxSpeed = maxSpeed;
+
+        if (objectPush.isPushing == true)
+        {
+            currentMaxSpeed = pushMaxSpeed;
+        }
+
+        pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -currentMaxSpeed, currentMaxSpeed), pc.velocity.y);
     }
     public bool CheckGrounding()
     {

@@ -10,20 +10,39 @@ public class PlayerObjectPush : MonoBehaviour
     public bool canPush = true;
     public bool isPushing = false;
 
-    private Collider2D activeCollider;
     private GameObject activeObject;
-
-    private BoxCollider2D myCollider;
-    private ParentConstraint constraint;
+    private Rigidbody2D activeBody;
 
     public GameObject player;
+
     private playerController controller;
+    private Animator playerAnimator;
+    private BoxCollider2D basePlayerCollider;
+    private BoxCollider2D pushPlayerCollider;
+
+    public Vector3 objectOffset;
+
+    [SerializeField]
+    private LayerMask groundMask;
+
+    // Data
+    private float throwDistance = 1.5f;
+    private float idleThrowDistance = 0.5f;
+
+    private float throwSpeed = 3;
 
     // Start is called before the first frame update
     void Start()
     {
-        myCollider = GetComponent<BoxCollider2D>();
         controller = player.GetComponent<playerController>();
+        playerAnimator = player.GetComponent<Animator>();
+        basePlayerCollider = player.GetComponent<BoxCollider2D>();
+
+        pushPlayerCollider = player.AddComponent<BoxCollider2D>();
+        pushPlayerCollider.enabled = false;
+
+        pushPlayerCollider.size = new Vector2(0.7492623f, 0.3579229f);
+        pushPlayerCollider.offset = new Vector2(-0.04596132f, -0.2675037f);
     }
 
     // Update is called once per frame
@@ -34,6 +53,14 @@ public class PlayerObjectPush : MonoBehaviour
                 StartPushing();
             else
                 StopPushing();
+
+        // Set Box Position
+
+        if (isPushing == true)
+        {
+            Vector3 newPosition = player.transform.position + objectOffset;
+            activeBody.position = newPosition;
+        }
     }
 
     // Coolissions
@@ -43,54 +70,60 @@ public class PlayerObjectPush : MonoBehaviour
         if (collision.gameObject.CompareTag("PushObject") != true)
             return;
 
-        activeCollider = collision;
         activeObject = collision.gameObject;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision == activeCollider)
-            StopPushing();
     }
 
     // Main
 
     void StartPushing()
     {
-        if (isPushing == true || canPush == false || !activeObject || !controller.CheckGrounding())
+        if (isPushing == true || canPush == false || !activeObject) // || !controller.CheckGrounding()
             return;
 
         isPushing = true;
 
-        ConstraintSource source = new ConstraintSource();
-        source.sourceTransform = player.transform;
-        source.weight = 1;
+        basePlayerCollider.enabled = false;
+        pushPlayerCollider.enabled = true;
 
-        Vector3 difference = activeObject.transform.position - player.transform.position;
-        Vector3 offset = new Vector3(0.9f, difference.y, 0);
+        activeBody = activeObject.GetComponent<Rigidbody2D>();
+        activeBody.gravityScale = 0;
+        activeBody.rotation = 0;
+        activeBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        if (difference.x < 0)
-            offset.x *= -1;
-
-        constraint = activeObject.AddComponent<ParentConstraint>();
-        constraint.constraintActive = true;
-        constraint.SetTranslationOffset(constraint.AddSource(source), offset);
-
-        print("Push " + activeObject.name + "!");
+        //print("Push " + activeObject.name + "!");
     }
 
     void StopPushing()
     {
         if (isPushing == true)
         {
-            Destroy(constraint);
-            constraint = null;
+            activeBody.constraints = RigidbodyConstraints2D.None;
+            activeBody.gravityScale = 1;
 
-            print("STOP PUSH");
+            basePlayerCollider.enabled = true;
+            pushPlayerCollider.enabled = false;
+
+            // Throw
+
+            bool isRight = playerAnimator.GetInteger("facedir") == 2;
+            Vector2 throwVector;
+
+            if (isRight == true)
+                throwVector = Vector2.right;
+            else
+                throwVector = Vector2.left;
+
+            if (playerAnimator.GetInteger("walkdir") == 0)
+                activeBody.position += throwVector * idleThrowDistance;
+            else
+                activeBody.position += throwVector * throwDistance;
+
+            activeBody.velocity = throwVector * throwSpeed;
+            //print("STOP PUSH");
         }
 
         isPushing = false;
-        activeCollider = null;
         activeObject = null;
+        activeBody = null;
     }
 }

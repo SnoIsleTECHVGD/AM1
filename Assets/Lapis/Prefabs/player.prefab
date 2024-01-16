@@ -74,6 +74,10 @@ MonoBehaviour:
   canPush: 1
   isPushing: 0
   player: {fileID: 5994544149309817036}
+  objectOffset: {x: 0, y: 0.45, z: 0}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &5994544148941012029
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,12 +173,15 @@ GameObject:
   - component: {fileID: 5994544149309817035}
   - component: {fileID: 5994544149309817047}
   - component: {fileID: 5994544149309817034}
-  - component: {fileID: 5994544149309817046}
   - component: {fileID: 3048311561611252895}
   - component: {fileID: 5889343828493473930}
   m_Layer: 0
   m_Name: player
+<<<<<<< HEAD
   m_TagString: PlayerTag
+=======
+  m_TagString: Player
+>>>>>>> 0607fa07f69873d31ef53128067f3e48df03e4c6
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -259,10 +266,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildUp: 4
-  pushBuildUp: 2
-  maxSpeed: 7
+  maxSpeed: 6.5
+  pushMaxSpeed: 3
   jumpspeed: 13
   objectPush: {fileID: 7740281340742592207}
+  pc: {fileID: 0}
   foot: {fileID: 5994544148941012028}
   groundMask:
     serializedVersion: 2
@@ -313,32 +321,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 0.24109933, y: 0.77689916}
-  m_EdgeRadius: 0
---- !u!61 &5994544149309817046
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994544149309817036}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 17adc3f4bb68dff44aff974d1befeede, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.03068079, y: -0.057866618}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.96, y: 0.96}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.25529012, y: 0.76570237}
   m_EdgeRadius: 0
 --- !u!82 &3048311561611252895
 AudioSource:
