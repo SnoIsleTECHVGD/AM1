@@ -94,6 +94,17 @@ public class playerController : MonoBehaviour
 
         pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -currentMaxSpeed, currentMaxSpeed), pc.velocity.y);
     }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Climbable"))
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                float buildUpDelta = (buildUp * 600) * Time.deltaTime;
+                pc.AddForce(Vector2.up * buildUpDelta);
+            }
+        }
+    }
     public void CheckGrounding()
     {
         RaycastHit2D hit = Physics2D.Raycast(foot.position, Vector2.down, 0.1f, groundMask);
