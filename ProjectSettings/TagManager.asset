@@ -8,6 +8,9 @@ TagManager:
   - jumpRefill
   - PushObject
   - PlayerTag
+  - Climbable
+  - Deadly
+  - setSpawn
   layers:
   - Default
   - TransparentFX
