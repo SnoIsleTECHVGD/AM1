@@ -10,6 +10,7 @@ public class playerController : MonoBehaviour
     public float pushMaxSpeed;
 
     public float jumpspeed;
+    public float coyoteTime;
 
     // Private References
     [SerializeField]
@@ -17,6 +18,12 @@ public class playerController : MonoBehaviour
 
     public Rigidbody2D pc;
     private Animator anim;
+
+    // Private Data
+
+    private float timeSinceGrounded = 0;
+    private bool isJumping = false;
+    private float jumpTime = 0;
 
     // Ground Detect
     [SerializeField]
@@ -57,9 +64,23 @@ public class playerController : MonoBehaviour
         }
 
         anim.SetBool("isPushing", objectPush.isPushing);
+        CheckGrounding();
 
-        if (Input.GetKeyDown(KeyCode.Space) && CheckGrounding()) // && objectPush.isPushing == false
+        if (isJumping == true)
         {
+            jumpTime += Time.deltaTime;
+
+            if (jumpTime >= 0.25f && timeSinceGrounded == 0)
+            {
+                isJumping = false;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && isJumping == false && timeSinceGrounded <= coyoteTime) // && objectPush.isPushing == false
+        {
+            isJumping = true;
+            jumpTime = 0;
+
             pc.AddForce(Vector2.up * jumpspeed, ForceMode2D.Impulse);
             gameObject.GetComponent<AudioSource>().Play();
         }
@@ -73,11 +94,16 @@ public class playerController : MonoBehaviour
 
         pc.velocity = new Vector2(Mathf.Clamp(pc.velocity.x, -currentMaxSpeed, currentMaxSpeed), pc.velocity.y);
     }
-    public bool CheckGrounding()
+    public void CheckGrounding()
     {
-        RaycastHit2D hit;
-        hit = Physics2D.Raycast(foot.position, Vector2.down, 0.1f, groundMask);
+        RaycastHit2D hit = Physics2D.Raycast(foot.position, Vector2.down, 0.1f, groundMask);
 
-        return hit;
+        if (hit)
+        {
+            timeSinceGrounded = 0;
+        } else
+        {
+            timeSinceGrounded += Time.deltaTime;
+        }
     }
 }
