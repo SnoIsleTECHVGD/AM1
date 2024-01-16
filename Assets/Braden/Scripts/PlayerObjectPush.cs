@@ -73,6 +73,12 @@ public class PlayerObjectPush : MonoBehaviour
         activeObject = collision.gameObject;
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject == activeObject)
+            activeObject = null;
+    }
+
     // Main
 
     void StartPushing()
