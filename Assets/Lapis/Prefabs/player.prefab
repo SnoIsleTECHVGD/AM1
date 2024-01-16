@@ -265,6 +265,7 @@ MonoBehaviour:
   maxSpeed: 6.5
   pushMaxSpeed: 3
   jumpspeed: 13
+  coyoteTime: 0.25
   objectPush: {fileID: 7740281340742592207}
   pc: {fileID: 0}
   foot: {fileID: 5994544148941012028}
