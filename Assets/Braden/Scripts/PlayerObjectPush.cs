@@ -93,7 +93,7 @@ public class PlayerObjectPush : MonoBehaviour
 
         activeBody = activeObject.GetComponent<Rigidbody2D>();
         activeBody.gravityScale = 0;
-        activeBody.rotation = 0;
+        //activeBody.rotation = 0;
         activeBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         //print("Push " + activeObject.name + "!");

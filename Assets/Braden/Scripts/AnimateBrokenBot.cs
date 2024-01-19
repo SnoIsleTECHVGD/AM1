@@ -7,6 +7,9 @@ public class AnimateBrokenBot : MonoBehaviour
     private Animator myAnimator;
     private float yieldTime = 0;
 
+    public float minTime = 3.5f;
+    public float maxTime = 5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +23,7 @@ public class AnimateBrokenBot : MonoBehaviour
         if (yieldTime <= 0)
         {
             myAnimator.SetInteger("AnimState", Random.Range(1, 3));
-            yieldTime = Random.Range(3.5f, 5f);
+            yieldTime = Random.Range(minTime, maxTime);
         } else
         {
             yieldTime -= Time.deltaTime;
