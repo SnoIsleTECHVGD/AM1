@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class playerController : MonoBehaviour
 {
     // Options
@@ -103,6 +103,14 @@ public class playerController : MonoBehaviour
                 float buildUpDelta = (buildUp * 600) * Time.deltaTime;
                 pc.AddForce(Vector2.up * buildUpDelta);
             }
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Deadly"))
+        {
+            //if fall into hazard just reload scene lmao i definitely did NOT ctrl+a the entire script on accident that didnt happen :) -L
+            SceneManager.LoadScene("Level1");
         }
     }
     public void CheckGrounding()
