@@ -5,6 +5,7 @@ using UnityEngine;
 public class KeyDoorAni : MonoBehaviour
 {
     private Animator anim;
+    private bool doorUnlocked;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +19,15 @@ public class KeyDoorAni : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //lmao lma o  uuhh
+        if (collision.CompareTag("Key"))
+        {
+            //do the thign
+            anim.SetBool("KEy", true);
+            doorUnlocked = true;
+        }
+        else if (collision.CompareTag("Player"))
+        {
+            anim.SetBool("doorOpen", true);
+        }
     }
 }
