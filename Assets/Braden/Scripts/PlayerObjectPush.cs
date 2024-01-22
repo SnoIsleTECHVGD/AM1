@@ -90,6 +90,7 @@ public class PlayerObjectPush : MonoBehaviour
         pushPlayerCollider.enabled = true;
 
         ObjectData data = activeObject.GetComponent<ObjectData>();
+        data.isBeingHeld = true;
         objectOffset = data.holdOffset;
 
         activeBody = activeObject.GetComponent<Rigidbody2D>();
@@ -110,6 +111,8 @@ public class PlayerObjectPush : MonoBehaviour
 
             basePlayerCollider.enabled = true;
             pushPlayerCollider.enabled = false;
+
+            activeObject.GetComponent<ObjectData>().isBeingHeld = false;
 
             // Throw
 

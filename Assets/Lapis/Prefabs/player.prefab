@@ -74,7 +74,6 @@ MonoBehaviour:
   canPush: 1
   isPushing: 0
   player: {fileID: 5994544149309817036}
-  objectOffset: {x: -0.06, y: 0.45, z: 0}
   groundMask:
     serializedVersion: 2
     m_Bits: 8
