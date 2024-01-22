@@ -15,12 +15,11 @@ public class PlayerObjectPush : MonoBehaviour
 
     public GameObject player;
 
-    private playerController controller;
     private Animator playerAnimator;
     private BoxCollider2D basePlayerCollider;
     private BoxCollider2D pushPlayerCollider;
 
-    public Vector3 objectOffset;
+    private Vector3 objectOffset;
 
     [SerializeField]
     private LayerMask groundMask;
@@ -34,7 +33,6 @@ public class PlayerObjectPush : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        controller = player.GetComponent<playerController>();
         playerAnimator = player.GetComponent<Animator>();
         basePlayerCollider = player.GetComponent<BoxCollider2D>();
 
@@ -83,7 +81,7 @@ public class PlayerObjectPush : MonoBehaviour
 
     void StartPushing()
     {
-        if (isPushing == true || canPush == false || !activeObject) // || !controller.CheckGrounding()
+        if (isPushing == true || canPush == false || !activeObject)
             return;
 
         isPushing = true;
@@ -91,9 +89,13 @@ public class PlayerObjectPush : MonoBehaviour
         basePlayerCollider.enabled = false;
         pushPlayerCollider.enabled = true;
 
+        ObjectData data = activeObject.GetComponent<ObjectData>();
+        objectOffset = data.holdOffset;
+
         activeBody = activeObject.GetComponent<Rigidbody2D>();
         activeBody.gravityScale = 0;
-        //activeBody.rotation = 0;
+
+        activeBody.transform.localEulerAngles = data.holdRotation;
         activeBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         //print("Push " + activeObject.name + "!");

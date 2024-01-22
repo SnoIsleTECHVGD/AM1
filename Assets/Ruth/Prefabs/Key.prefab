@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 289722804290819063}
   - component: {fileID: 289722804290819062}
   - component: {fileID: 289722804290819061}
+  - component: {fileID: 3816849193988188003}
   m_Layer: 3
   m_Name: Key
   m_TagString: PushObject
@@ -132,6 +133,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.19}
   m_EdgeRadius: 0
+--- !u!114 &3816849193988188003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289722804290819060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 484174124f81c0e4e974226741d8f128, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdOffset: {x: 0, y: 0.1, z: 0}
+  holdRotation: {x: 0, y: 0, z: -90}
 --- !u!1 &2258096066087663565
 GameObject:
   m_ObjectHideFlags: 0
