@@ -4,7 +4,7 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform target;
 
-    public bool setCameraOnRun = false;
+    public bool setCameraOnRun;
     public float speed;
     public Vector3 offset;
 
