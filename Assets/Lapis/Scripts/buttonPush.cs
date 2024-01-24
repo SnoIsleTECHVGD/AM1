@@ -9,6 +9,8 @@ public class buttonPush : MonoBehaviour
     public Vector3 changeVector;
     public float lerpSpeed;
 
+    private AudioSource sound;
+
     private Vector3 basePosition;
     private Vector3 goal = Vector3.zero;
 
@@ -20,6 +22,7 @@ public class buttonPush : MonoBehaviour
     private void Start()
     {
         basePosition = pillar.transform.position;
+        sound = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -37,6 +40,9 @@ public class buttonPush : MonoBehaviour
 
             goal = -goal;
             dt = 0;
+
+            if (currentCollide == true)
+                sound.Play();
         } 
     }
 
@@ -53,9 +59,9 @@ public class buttonPush : MonoBehaviour
             {
                 currentCollide = true;
                 goal = changeVector;
+                sound.Play();
             }
         }
-
     }
     private void OnTriggerExit2D(Collider2D collision)
     {

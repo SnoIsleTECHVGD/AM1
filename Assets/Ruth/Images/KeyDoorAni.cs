@@ -5,6 +5,11 @@ public class KeyDoorAni : MonoBehaviour
     private Animator anim;
     private bool doorUnlocked = false;
 
+    [SerializeField]
+    private AudioSource keySound;
+    [SerializeField]
+    private AudioSource doorOpenSound;
+
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -18,12 +23,15 @@ public class KeyDoorAni : MonoBehaviour
             anim.SetBool("KEy", true);
             doorUnlocked = true;
 
+            keySound.Play();
             Destroy(GameObject.Find("Key"));
+           
             print("working");
         }
         else if (collision.gameObject.CompareTag("Player") && doorUnlocked)
         {
             anim.SetBool("doorOpen", true);
+            doorOpenSound.Play();
 
             collision.gameObject.GetComponent<SpriteRenderer>().enabled = false;
             collision.gameObject.GetComponent<Rigidbody2D>().simulated = false;

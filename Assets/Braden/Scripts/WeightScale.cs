@@ -14,6 +14,8 @@ public class WeightScale : MonoBehaviour
     private BoxCollider2D leftCollider;
     private BoxCollider2D rightCollider;
 
+    private AudioSource weightSound;
+
     private Transform leftTrans;
     private Transform rightTrans;
     private Transform barTrans;
@@ -28,11 +30,14 @@ public class WeightScale : MonoBehaviour
     float transformYPerDegree = 0.07f / 35;
     float transformXPerDegree = 0.025f / 35;
 
+    private float oldRatio = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         leftCollider = weightLeft.GetComponent<BoxCollider2D>();
         rightCollider = weightRight.GetComponent<BoxCollider2D>();
+        weightSound = GetComponent<AudioSource>();
 
         leftTrans = weightLeft.transform;
         rightTrans = weightRight.transform;
@@ -85,6 +90,8 @@ public class WeightScale : MonoBehaviour
             leftTrans.localPosition = Vector2.Lerp(leftTrans.localPosition, new Vector2(-basePos.x, basePos.y), dt);
             rightTrans.localPosition = Vector2.Lerp(rightTrans.localPosition, new Vector2(basePos.x, basePos.x), dt);
 
+            oldRatio = 0;
+
             return;
         }
 
@@ -100,6 +107,11 @@ public class WeightScale : MonoBehaviour
             multiplier = -1;
             ratio = Mathf.Clamp((rightMass / leftMass) - minMultiplier, 0, 1);
         }
+
+        if (ratio * multiplier != oldRatio && !weightSound.isPlaying)
+            weightSound.Play();
+
+        oldRatio = ratio * multiplier;
 
         float weightBarRotate = (maxDegrees * ratio) * multiplier;
 

@@ -99,6 +99,11 @@ public class PlayerObjectPush : MonoBehaviour
         activeBody.transform.localEulerAngles = data.holdRotation;
         activeBody.constraints = RigidbodyConstraints2D.FreezeRotation;
 
+        AudioSource pushSound = activeObject.GetComponent<AudioSource>();
+
+        if (pushSound)
+            pushSound.Play();
+
         //print("Push " + activeObject.name + "!");
     }
 

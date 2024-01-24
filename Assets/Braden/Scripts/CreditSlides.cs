@@ -6,12 +6,14 @@ public class CreditSlides : MonoBehaviour
     private int slideNumber = 0;
     public int amountOfSlides;
 
+    private AudioSource selectSound;
     private Image currentSlide;
 
     // Start is called before the first frame update
     void Start()
     {
         DisplayNextSlide(Random.Range(1, 6));
+        selectSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -40,5 +42,8 @@ public class CreditSlides : MonoBehaviour
         currentSlide = findObject.GetComponent<Image>();
 
         currentSlide.enabled = true;
+
+        if (selectSound)
+            selectSound.Play();
     }
 }
