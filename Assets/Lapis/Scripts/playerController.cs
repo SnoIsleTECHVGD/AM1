@@ -110,9 +110,24 @@ public class playerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Deadly"))
         {
             //if fall into hazard just reload scene lmao i definitely did NOT ctrl+a the entire script on accident that didnt happen :) -L
-            SceneManager.LoadScene("Level1");
+            StartCoroutine(hidePlayer());
         }
     }
+    IEnumerator hidePlayer()
+    {
+        yield return new WaitForSeconds(0.15f);
+        GetComponent<SpriteRenderer>().enabled = false;
+        pc.simulated = false;
+
+        StartCoroutine(reloadLevel());
+    }
+
+    IEnumerator reloadLevel()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("Level1");
+    }
+
     public void CheckGrounding()
     {
         RaycastHit2D hit = Physics2D.Raycast(foot.position, Vector2.down, 0.1f, groundMask);
