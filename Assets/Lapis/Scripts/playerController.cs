@@ -27,7 +27,7 @@ public class playerController : MonoBehaviour
 
     // Ground Detect
     [SerializeField]
-    private Transform foot;
+    private BoxCollider2D foot;
     [SerializeField]
     private LayerMask groundMask;
 
@@ -130,14 +130,16 @@ public class playerController : MonoBehaviour
 
     public void CheckGrounding()
     {
-        RaycastHit2D hit = Physics2D.Raycast(foot.position, Vector2.down, 0.1f, groundMask);
+        RaycastHit2D[] cast = new RaycastHit2D[1];
 
-        if (hit)
-        {
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.layerMask = groundMask;
+
+        int results = foot.Cast(Vector2.down, filter, cast, 0.2f, true);
+
+        if (results > 0)
             timeSinceGrounded = 0;
-        } else
-        {
+        else
             timeSinceGrounded += Time.deltaTime;
-        }
     }
 }
