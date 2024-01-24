@@ -11,5 +11,6 @@ public class MushroomBounce : MonoBehaviour
 
         Rigidbody2D playerBody = collision.gameObject.GetComponent<Rigidbody2D>();
         playerBody.AddForce(Vector2.up * (jumpPower * 250));
+        gameObject.GetComponent<AudioSource>().Play();
     }
 }
