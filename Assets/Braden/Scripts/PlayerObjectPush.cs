@@ -57,7 +57,11 @@ public class PlayerObjectPush : MonoBehaviour
         if (isPushing == true)
         {
             Vector3 newPosition = player.transform.position + objectOffset;
-            activeBody.position = newPosition;
+
+            if (activeObject.GetComponent<ObjectData>().hasCollision == true)
+                activeBody.position = newPosition;
+            else
+                activeObject.transform.position = newPosition;
         }
     }
 
@@ -73,7 +77,7 @@ public class PlayerObjectPush : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject == activeObject)
+        if (collision.gameObject == activeObject && isPushing == false)
             activeObject = null;
     }
 

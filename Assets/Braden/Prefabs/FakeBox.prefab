@@ -130,7 +130,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!114 &6606031222738849036
 MonoBehaviour:
@@ -147,3 +147,4 @@ MonoBehaviour:
   holdOffset: {x: -0.06, y: 0.45, z: 0}
   holdRotation: {x: 0, y: 0, z: 0}
   isBeingHeld: 0
+  hasCollision: 1
